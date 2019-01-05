@@ -26,7 +26,8 @@ This repository contains firmware for the UBC Orbit Command and Data Handling sy
 * [CDH Requirements Document](https://docs.google.com/document/d/1n8n077lcpQeHJViyi5_1BgQtS7tgomw-C6Bp_QjgJ1I/edit#): detailed list of design requirements for all features of the CDH system
 
 ### Educational Resources
-* *To come soon!*
+* [FreeRTOS Intro Powerpoint](https://drive.google.com/open?id=1kQj6Hq9gyHxC9R7xSqlmpMgZxKrHSkgS)
+* *More to come soon!*
 
 ### STM32H743ZI Resources
 * [Technical Reference Manual](https://www.st.com/content/ccc/resource/technical/document/reference_manual/group0/c9/a3/76/fa/55/46/45/fa/DM00314099/files/DM00314099.pdf/jcr:content/translations/en.DM00314099.pdf): detailed documentation on all peripherals and their possible configurations
