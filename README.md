@@ -9,7 +9,7 @@ This repository contains firmware for the UBC Orbit Command and Data Handling sy
 *Information to come.*
 
 ## Software Components
-* **FreeRTOS V10:** real-time OS commonly used in embedded systems. Helps with prioritizing different functions and suspending tasks where no longer needed.
+* **FreeRTOS V9:** real-time OS commonly used in embedded systems. Helps with prioritizing different functions and suspending tasks where no longer needed.
 * **Command System:** *Structure TBD*
 * **Filesystem:** *TBD*
 
