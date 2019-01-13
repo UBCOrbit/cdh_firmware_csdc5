@@ -5,6 +5,10 @@ This repository contains firmware for the UBC Orbit Command and Data Handling sy
 
 * On-demand photo of specified location and downlink of photo to amateur radio operators worldwide
 
+## Extra documentation
+
+Further information on the project can be found in the [/docs](https://github.com/UBCOrbit/cdh_firmware_csdc5/tree/master/docs) directory, including an overview of the repository layout and guidelines.
+
 ## Trillium
 *Information to come.*
 
