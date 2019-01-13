@@ -2,6 +2,10 @@ project(csdc5 C CXX ASM)
 
 cmake_minimum_required(VERSION 3.6)
 enable_language(ASM)
+if (NOT CMAKE_BUILD_TYPE)
+    message(STATUS "No build type selected, default to Debug")
+    set(CMAKE_BUILD_TYPE "Debug")
+endif()
 
 # put binaries in ./bin
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
