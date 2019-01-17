@@ -58,14 +58,15 @@ SECTIONS {
 	 * The default values are stored in flash, and then to
 	 * make them writable src/startup.s copies them into ram.
 	 */
+	 data_lma_start = LOADADDR(.data);
 	.data : {
 		. = ALIGN(4);
-		data_start = .;
+		data_vma_start = .;
 		*(.data)
 		*(.data*)
 
 		. = ALIGN(4);
-		data_end = .;
+		data_vma_end = .;
 	} >DTCMRAM AT> FLASH
 
 	/*
