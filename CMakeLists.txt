@@ -14,11 +14,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 aux_source_directory(src SOURCES)
 set(ASM_SOURCES src/startup.s src/isr_vec.s)
 include_directories(src)
+include_directories(config)
 
 # includes from external packages
 include_directories(packages/cmsis)
 include_directories(packages/hal/Inc)
+include_directories(packages/freertos/include)
+include_directories(packages/freertos/portable/GCC/ARM_CM7/r0p1)
 aux_source_directory(packages/hal/Src SOURCES)
+aux_source_directory(packages/freertos SOURCES)
 
 add_executable(csdc5.elf ${SOURCES} ${ASM_SOURCES})
 
