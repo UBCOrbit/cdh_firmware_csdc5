@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "miDebuggerPath": "arm-none-eabi-gdb",
+            "targetArchitecture": "arm",
+            "program": "${workspaceRoot}/bin/csdc5.elf",
+            "setupCommands": [
+                {
+                    "text": "file '${workspaceRoot}/bin/csdc5.elf'"
+                },
+                {
+                    "text": "target remote localhost:3333"
+                },
+                {
+                    "text": "monitor reset halt"
+                },
+                {
+                    "text": "load ${workspaceRoot}/bin/csdc5.elf"
+                }
+            ],
+            "preLaunchTask": "make",
+            "launchCompleteCommand": "None",
+            "externalConsole": false,
+            "cwd": "${workspaceRoot}"
+        }
+    ]
+}
