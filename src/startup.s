@@ -4,8 +4,12 @@
 	.thumb
 
 	.text
+	.section  .text, "ax", %progbits
 	.globl handle_reset
+	.type  handle_reset, %function
 handle_reset:
+	ldr sp, =stack_end
+
 	/* copy .data into ram */
 	ldr r1, =data_vma_start
 	ldr r2, =data_lma_start
@@ -38,3 +42,4 @@ handle_reset:
 	/* if main ever returns, just loop */
 0:
 	b 0b
+	.size  handle_reset, .-handle_reset
