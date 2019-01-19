@@ -83,6 +83,16 @@ SECTIONS {
 		bss_end = .;
 	}
 
+	.ARM.extab : {
+		*(.ARM.extab* .gnu.linkonce.armextab.*)
+	} >FLASH
+
+	.ARM : {
+		__exidx_start = .;
+		*(.ARM.exidx*)
+		__exidx_end = .;
+	} >FLASH
+
 	/DISCARD/ : {
 		libc.a ( * )
 		libm.a ( * )
