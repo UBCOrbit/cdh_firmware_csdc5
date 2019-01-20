@@ -1,10 +1,13 @@
+sudo: required
 language: c++
 addons:
   apt:
     packages:
-      - gcc-arm-none-eabi
       - cmake
-      - libnewlib-arm-none-eabi
 script:
+  - sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa -y
+  - sudo apt-get update -q
+  - sudo apt-get install gcc-arm-embedded -y
+  - arm-none-eabi-gcc --version
   - ./boot.sh
   - make
