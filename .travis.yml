@@ -5,7 +5,6 @@ addons:
       - gcc-arm-none-eabi
       - cmake
       - libnewlib-arm-none-eabi
-      - libstdc++-arm-none-eabi-newlib
 script:
-  - ./boot
+  - ./boot.sh
   - make

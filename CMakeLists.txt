@@ -25,6 +25,7 @@ aux_source_directory(packages/hal/Src SOURCES)
 aux_source_directory(packages/freertos SOURCES)
 
 add_executable(csdc5.elf ${SOURCES} ${ASM_SOURCES})
+add_compile_options("-Wall" "-Wextra" "-fexceptions")
 
 # when the build is complete, show how much flash memory we've used up
 add_custom_command(
