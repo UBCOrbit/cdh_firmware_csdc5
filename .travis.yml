@@ -1,0 +1,11 @@
+language: c++
+addons:
+  apt:
+    packages:
+      - gcc-arm-none-eabi
+      - cmake
+      - libnewlib-arm-none-eabi
+      - libstdc++-arm-none-eabi-newlib
+script:
+  - ./boot
+  - make
