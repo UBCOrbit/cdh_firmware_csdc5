@@ -23,6 +23,7 @@ include_directories(packages/freertos/include)
 include_directories(packages/freertos/portable/GCC/ARM_CM7/r0p1)
 aux_source_directory(packages/hal/Src SOURCES)
 aux_source_directory(packages/freertos SOURCES)
+aux_source_directory(packages/freertos/portable/GCC/ARM_CM7/r0p1 SOURCES)
 
 add_executable(csdc5.elf ${SOURCES} ${ASM_SOURCES})
 add_compile_options("-Wall" "-Wextra" "-fexceptions")

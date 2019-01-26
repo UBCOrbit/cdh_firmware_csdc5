@@ -20,12 +20,13 @@ set(FLAGS_LINKER "-Wl,--gc-sections --specs=nano.specs -Tmem.ld -lc -lm -lnosys 
 
 set(CMAKE_C_FLAGS "${FLAGS_COMMON} ${FLAGS_C}" CACHE STRING "C Compiler Flags")
 set(CMAKE_C_FLAGS_DEBUG "-Og")
-set(CMAKE_C_FLAGS_RELEASE "-Os")
+set(CMAKE_C_FLAGS_RELEASE "-Os -flto")
 
 set(CMAKE_CXX_FLAGS "${FLAGS_COMMON} ${FLAGS_CXX}" CACHE STRING "C++ Compiler Flags")
 set(CMAKE_CXX_FLAGS_DEBUG "-Og")
-set(CMAKE_CXX_FLAGS_RELEASE "-Os")
+set(CMAKE_CXX_FLAGS_RELEASE "-Os -flto")
 
 set(CMAKE_ASM_FLAGS "${FLAGS_COMMON}")
 
 set(CMAKE_EXE_LINKER_FLAGS "${FLAGS_COMMON} ${FLAGS_LINKER}" CACHE STRING "Linker flags")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-flto")

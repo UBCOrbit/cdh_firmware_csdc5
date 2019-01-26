@@ -1,16 +1,30 @@
 #include <stm32h7xx_hal.h>
+#include <FreeRTOS.h>
+#include <task.h>
+
+#include "hardware_init.h"
+#include "os.h"
+
+StaticTask_t led_task;
+StackType_t led_stack[configMINIMAL_STACK_SIZE];
+
+void led_func(void*) {
+    bool led = false;
+    while (1) {
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, (GPIO_PinState) led);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+        led = !led;
+    }
+}
 
 int main() {
-    __GPIOB_CLK_ENABLE();
-    GPIO_InitTypeDef in;
-    in.Mode = GPIO_MODE_OUTPUT_PP;
-    in.Speed = GPIO_SPEED_FREQ_LOW;
-    in.Pin = GPIO_PIN_7;
-    in.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOB, &in);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
+    hardware_init();
 
-    while (1) {
-	
-    }
+
+
+    TaskHandle_t t;
+    t = xTaskCreateStatic(&led_func, "LED", configMINIMAL_STACK_SIZE, nullptr, 1, led_stack, &led_task);
+    vTaskResume(t);
+
+    os_init();
 }

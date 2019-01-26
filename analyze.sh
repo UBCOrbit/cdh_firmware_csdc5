@@ -1,5 +1,8 @@
 #!/bin/sh
 
+export CCC_CC=clang
+export CCC_CXX=clang++
+
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1\
       -DCMAKE_TOOLCHAIN_FILE=./cmake/static.cmake .
 
