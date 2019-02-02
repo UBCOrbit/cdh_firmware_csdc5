@@ -72,7 +72,7 @@ SECTIONS {
 	/*
 	 * Zero-initialized data doesn't take up any space in ram,
 	 * but src/startup.s needs to zero it out prior to main().
-	*/
+	 */
 	.bss : {
 		. = ALIGN(4);
 		bss_start = .;
@@ -92,6 +92,17 @@ SECTIONS {
 		*(.ARM.exidx*)
 		__exidx_end = .;
 	} >FLASH
+
+	/*
+	 * Completely fake heap to satisfy newlib: do NOT use
+	 * dynamic memory allocation.
+	 */
+	._user_heap_stack : {
+		. = ALIGN(8);
+		PROVIDE ( end = . );
+		PROVIDE ( _end = . );
+		. = ALIGN(8);
+	} >DTCMRAM
 
 	/DISCARD/ : {
 		libc.a ( * )

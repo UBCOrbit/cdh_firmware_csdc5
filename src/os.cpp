@@ -1,14 +1,11 @@
 #include <FreeRTOS.h>
-#include <task.h>
 #include <stdint.h>
+#include <task.h>
 
 #include "os.h"
 
 extern "C" void vApplicationGetIdleTaskMemory(StaticTask_t **, StackType_t **,
                                               uint32_t *);
-
-uint32_t SystemCoreClock;
-
 StaticTask_t idle_task;
 StackType_t idle_stack[configMINIMAL_STACK_SIZE];
 
@@ -21,6 +18,4 @@ vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
     *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
 }
 
-void os_init() {
-    vTaskStartScheduler();
-}
+void os_init() { vTaskStartScheduler(); }
