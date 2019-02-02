@@ -1,2 +1,2 @@
-cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1^
+cmake -G "MinGW Makefiles"^
       -DCMAKE_TOOLCHAIN_FILE=./cmake/gcc.cmake .
