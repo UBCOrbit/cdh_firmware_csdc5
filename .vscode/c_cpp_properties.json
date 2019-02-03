@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Linux"
+            "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**"
             ],
@@ -10,7 +10,7 @@
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64",
             "compileCommands": "${workspaceFolder}/compile_commands.json"
-        }
+        },
         {
             "name": "Win32",
             "includePath": [
