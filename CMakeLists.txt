@@ -12,8 +12,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY bin)
 
 # all our sources are under ./src
-aux_source_directory(src SOURCES)
-set(ASM_SOURCES src/startup.s src/isr_vec.s)
+file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
+set(ASM_SOURCES src/startup/startup.s src/startup/isr_vec.s)
 include_directories(src)
 include_directories(config)
 

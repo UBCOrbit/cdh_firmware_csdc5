@@ -45,13 +45,19 @@ SECTIONS {
 		. = ALIGN(4);
 	} >FLASH
 
+        .init_array : {
+		__init_array_start = .;
+		KEEP (*(.init_array*))
+		__init_array_end = .;
+        } >FLASH
+
 	/* This data can stay in flash (like const char* etc) */
 	.rodata : {
 		. = ALIGN(4);
 		*(.rodata)
 		*(.rodata*)
 		. = ALIGN(4);
-	} > FLASH
+	} >FLASH
 
 	/*
 	 * Any global variables that need to be initialized.
@@ -92,17 +98,6 @@ SECTIONS {
 		*(.ARM.exidx*)
 		__exidx_end = .;
 	} >FLASH
-
-	/*
-	 * Completely fake heap to satisfy newlib: do NOT use
-	 * dynamic memory allocation.
-	 */
-	._user_heap_stack : {
-		. = ALIGN(8);
-		PROVIDE ( end = . );
-		PROVIDE ( _end = . );
-		. = ALIGN(8);
-	} >DTCMRAM
 
 	/DISCARD/ : {
 		libc.a ( * )

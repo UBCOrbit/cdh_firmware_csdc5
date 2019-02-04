@@ -1,6 +1,6 @@
 #include <stm32h7xx_hal.h>
 
-#include "hardware_init.h"
+#include "hardware/init.h"
 
 void hardware_init() {
     HAL_Init();
@@ -8,6 +8,7 @@ void hardware_init() {
     SystemCoreClock = HAL_RCC_GetSysClockFreq();
     HAL_SYSTICK_Config(SystemCoreClock / 1000);
 
+    __SYSCFG_CLK_ENABLE();
     __GPIOB_CLK_ENABLE();
     GPIO_InitTypeDef c;
     c.Mode = GPIO_MODE_OUTPUT_PP;
@@ -15,6 +16,16 @@ void hardware_init() {
     c.Pin = GPIO_PIN_7 | GPIO_PIN_14 | GPIO_PIN_0;
     c.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOB, &c);
+
+    __GPIOC_CLK_ENABLE();
+    c.Mode = GPIO_MODE_IT_RISING;
+    c.Speed = GPIO_SPEED_FREQ_LOW;
+    c.Pin = GPIO_PIN_13;
+    c.Pull = GPIO_PULLDOWN;
+    HAL_GPIO_Init(GPIOC, &c);
+
+    HAL_NVIC_SetPriority(EXTI15_10_IRQn, 6, 0);
+    HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
     uart_init();
 }
