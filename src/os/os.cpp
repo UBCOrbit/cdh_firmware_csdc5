@@ -19,3 +19,13 @@ vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
 }
 
 void os_init() { vTaskStartScheduler(); }
+
+void Task::delay(uint32_t ms) { vTaskDelay(ms / portTICK_PERIOD_MS); }
+
+WakeupTimer::WakeupTimer(uint32_t period) : period(period), last_wake(0) {}
+
+void WakeupTimer::sleep() {
+    if (!last_wake)
+        last_wake = xTaskGetTickCount();
+    vTaskDelayUntil(&last_wake, period);
+}
