@@ -1,5 +1,6 @@
 #include <FreeRTOS.h>
 #include <stdint.h>
+#include <stm32h7xx_hal.h>
 #include <task.h>
 
 #include "os.h"
@@ -18,7 +19,11 @@ vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
     *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
 }
 
-void os_init() { vTaskStartScheduler(); }
+void os_init() {
+    HAL_SYSTICK_Config(SystemCoreClock / 1000);
+
+    vTaskStartScheduler();
+}
 
 void Task::delay(uint32_t ms) { vTaskDelay(ms / portTICK_PERIOD_MS); }
 

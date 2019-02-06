@@ -40,13 +40,14 @@ handle_reset:
         isb
 
         /* run C++ constructors */
-        ldr r0, =__init_array_start
-        ldr r1, =__init_array_end
+        ldr r4, =__init_array_start
+        ldr r5, =__init_array_end
 0:
-        cmp r0, r1
+        cmp r4, r5
         bhs 1f
-        blx r0
-        add r0, #4
+        ldr r7, [r4]
+        blx r7
+        add r4, #4
         b 0b
 
 1:

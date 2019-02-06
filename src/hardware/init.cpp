@@ -1,12 +1,16 @@
 #include <stm32h7xx_hal.h>
 
+#include "hardware/gpio.h"
 #include "hardware/init.h"
 
+/**
+ * @brief Initialize peripherals and the HAL.
+ *
+ * This is temporary, and will be refactored into a more robust system for
+ * initializing GPIOs.
+ */
 void hardware_init() {
     HAL_Init();
-
-    SystemCoreClock = HAL_RCC_GetSysClockFreq();
-    HAL_SYSTICK_Config(SystemCoreClock / 1000);
 
     __SYSCFG_CLK_ENABLE();
     __GPIOB_CLK_ENABLE();
@@ -59,4 +63,17 @@ void uart_init() {
     uart.Init.RXFIFOThreshold = UART_RXFIFO_THRESHOLD_1_8;
     uart.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
     HAL_UART_Init(&uart);
+}
+
+TIM_HandleTypeDef tim2;
+
+/**
+ * @brief Force the HAL to use a hardware timer instead of the SysTick.
+ */
+extern "C" HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority) {
+    __HAL_RCC_TIM2_CLK_ENABLE();
+
+    // todo
+
+    return HAL_OK;
 }

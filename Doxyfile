@@ -1,0 +1,17 @@
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = cdh_firmware_csdc5
+PROJECT_BRIEF          = "Firmware for all three Trillium chips on CDH's board for CSDC5."
+PROJECT_LOGO           =
+OUTPUT_DIRECTORY       = ./docs/doxy
+CREATE_SUBDIRS         = NO
+ALLOW_UNICODE_NAMES    = YES
+OUTPUT_LANGUAGE        = English
+OUTPUT_TEXT_DIRECTION  = None
+BRIEF_MEMBER_DESC      = YES
+REPEAT_BRIEF           = YES
+RECURSIVE              = YES
+INPUT                  = ./src
+FILE_PATTERNS          = *.c *.h *.s *.cpp
+EXTRACT_ALL            = YES
+SOURCE_BROWSER         = YES
+REFERENCES_LINK_SOURCE = YES
