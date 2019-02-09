@@ -27,6 +27,8 @@ extern "C" HAL_StatusTypeDef HAL_InitTick(uint32_t priority) {
     uint32_t presc = (freq / 1000000) - 1;
     uint32_t period = (1000000 / 1000) - 1;
 
+    __HAL_DBGMCU_FREEZE_TIM2();
+
     hal_timer.Instance = TIM2;
     hal_timer.Init = {presc, TIM_COUNTERMODE_UP, period, 0, 0, 0};
     auto s = HAL_TIM_Base_Init(&hal_timer);
