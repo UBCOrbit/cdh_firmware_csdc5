@@ -1,7 +1,7 @@
 #include "hardware/clock.h"
 #include "hardware/init.h"
+#include "os/async.h"
 #include "os/os.h"
-#include "util/random.h"
 
 /**
  * @brief Main entry point for Trillium's firmware.
@@ -23,7 +23,6 @@
 int main() {
     clock_init();
     hardware_init();
-    rng_init();
 
     // Does not return.
     os_init();

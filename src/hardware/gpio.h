@@ -6,6 +6,14 @@
 
 /**
  * @brief OO wrapper for GPIOs.
+ *
+ * Usage example:
+ *
+ * ```
+ * GPIO pin { GPIOB, 14, GPIO::OutputPP, GPIO::None, 0 };
+ * pin.set(true); // turn the LED on
+ * pin.deinit(); // save some power by switching the output off
+ * ```
  */
 class GPIO : public Hardware {
 public:
@@ -24,6 +32,9 @@ public:
         Analog = GPIO_MODE_ANALOG,
     };
 
+    /**
+     * @brief Enumeration for possible resistor configurations.
+     */
     enum Resistor {
         None = GPIO_NOPULL,
         Pullup = GPIO_PULLUP,
@@ -37,11 +48,12 @@ public:
 
     void init() override;
     void deinit() override;
+    uint32_t idle_power() override;
 
-private:
-    GPIO_TypeDef *port;
-    uint32_t pin;
+protected:
+    GPIO_TypeDef *port; //< Pointer to the GPIO register block.
+    uint32_t pin;       //< The pin inside the port.
     Mode mode;
     Resistor res;
-    uint32_t alt;
+    uint32_t alt; //< Which alternate function is selected.
 };
