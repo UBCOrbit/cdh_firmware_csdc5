@@ -1,6 +1,5 @@
 #include "hardware/clock.h"
 #include "hardware/init.h"
-#include "os/async.h"
 #include "os/os.h"
 
 /**

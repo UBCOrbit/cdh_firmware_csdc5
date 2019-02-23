@@ -48,12 +48,15 @@ public:
 
     void init() override;
     void deinit() override;
-    uint32_t idle_power() override;
 
 protected:
+    uint32_t get_portnum();
+
     GPIO_TypeDef *port; //< Pointer to the GPIO register block.
     uint32_t pin;       //< The pin inside the port.
-    Mode mode;
-    Resistor res;
+    Mode mode;          //< Configured mode and push-pull configuration.
+    Resistor res;       //< Resistor pull-up, pull-down, or floating configuration.
     uint32_t alt; //< Which alternate function is selected.
+
+    static uint8_t pins[11]; //< Number of in-use pins per port.
 };

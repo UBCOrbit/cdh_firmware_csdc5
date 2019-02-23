@@ -11,7 +11,6 @@ class Random : public Hardware {
 public:
     void init() override;
     void deinit() override;
-    uint32_t idle_power() override;
 
     uint32_t operator()();
     // Sorry! No secure random number generation for now while I sort out
