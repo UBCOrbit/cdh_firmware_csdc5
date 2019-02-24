@@ -25,6 +25,12 @@ GPIO::GPIO(GPIO_TypeDef *port, uint32_t pin, GPIO::Mode mode,
  */
 void GPIO::set(bool on) { HAL_GPIO_WritePin(port, pin, (GPIO_PinState)on); }
 
+/**
+ * @brief Read a digital pin.
+ *
+ * @return true = HIGH, false = LOW
+ */
+bool GPIO::read() { return HAL_GPIO_ReadPin(port, pin); }
 
 /**
  * Figures out which GPIO port we were given, so that we can figure

@@ -45,6 +45,7 @@ public:
          uint32_t alt);
 
     void set(bool on);
+    bool read();
 
     void init() override;
     void deinit() override;
