@@ -61,7 +61,7 @@ void GPIO::init() {
     // Enable the port we're using.
     SET_BIT(RCC->AHB4ENR, 1 << portnum);
 
-    GPIO_InitTypeDef c{pin, mode, res, alt};
+    GPIO_InitTypeDef c{pin, mode, res, GPIO_SPEED_FREQ_LOW, alt};
     HAL_GPIO_Init(port, &c);
 }
 

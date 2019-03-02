@@ -11,10 +11,10 @@
  */
 void debug_msg(const char *msg) {
 #ifdef DEBUG
-    __asm__("mov r0, #0x4;"
-            "mov r1, %[msg];"
+    __asm__("mov r1, %[msg];"
+            "mov r0, #0x4;"
             "bkpt #0xab;"
             :
-            : [msg] "r" (msg));
+            : [msg] "r"(msg));
 #endif
 }
