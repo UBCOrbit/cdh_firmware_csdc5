@@ -18,6 +18,11 @@
 class GPIO : public Hardware {
 public:
     /**
+     * @brief All 11 GPIO ports
+     */
+    enum Port { A, B, C, D, E, F, G, H, I, J, K };
+
+    /**
      * @brief Type-safe mode selection.
      *
      * Technically, this combines both the "mode" field of the GPIO peripheral
@@ -41,8 +46,7 @@ public:
         Pulldown = GPIO_PULLDOWN,
     };
 
-    GPIO(GPIO_TypeDef *port, uint32_t pin, Mode mode, Resistor res,
-         uint32_t alt);
+    GPIO(Port port, uint32_t pin, Mode mode, Resistor res, uint32_t alt);
 
     void set(bool on);
     bool read();
@@ -51,9 +55,10 @@ public:
     void deinit() override;
 
 protected:
-    uint32_t get_portnum();
+    GPIO_TypeDef *get_regs();
 
-    GPIO_TypeDef *port; //< Pointer to the GPIO register block.
+    Port port;
+    GPIO_TypeDef *regs; //< Pointer to the GPIO register block.
     uint32_t pin;       //< The pin inside the port.
     Mode mode;          //< Configured mode and push-pull configuration.
     Resistor res; //< Resistor pull-up, pull-down, or floating configuration.

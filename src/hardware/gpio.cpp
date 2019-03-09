@@ -14,23 +14,24 @@
  * @param alt If `mode` is @ref GPIO::AlternatePP or @ref GPIO::AlternateOD,
  * this selects the alternae function.
  */
-GPIO::GPIO(GPIO_TypeDef *port, uint32_t pin, GPIO::Mode mode,
-           GPIO::Resistor res, uint32_t alt)
-    : port(port), pin(1 << pin), mode(mode), res(res), alt(alt) {}
+GPIO::GPIO(GPIO::Port port, uint32_t pin, GPIO::Mode mode, GPIO::Resistor res,
+           uint32_t alt)
+    : port(port), regs(get_regs()), pin(1 << pin), mode(mode), res(res),
+      alt(alt) {}
 
 /**
  * @brief Write to a GPIO pin.
  *
  * @param on true = HIGH, false = LOW
  */
-void GPIO::set(bool on) { HAL_GPIO_WritePin(port, pin, (GPIO_PinState)on); }
+void GPIO::set(bool on) { HAL_GPIO_WritePin(regs, pin, (GPIO_PinState)on); }
 
 /**
  * @brief Read a digital pin.
  *
  * @return true = HIGH, false = LOW
  */
-bool GPIO::read() { return HAL_GPIO_ReadPin(port, pin); }
+bool GPIO::read() { return HAL_GPIO_ReadPin(regs, pin); }
 
 /**
  * Figures out which GPIO port we were given, so that we can figure
@@ -40,9 +41,7 @@ bool GPIO::read() { return HAL_GPIO_ReadPin(port, pin); }
  *
  * @return The number corresponding to the PORT (A = 0, B = 1, ...).
  */
-uint32_t GPIO::get_portnum() {
-    return ((uint32_t)port - (uint32_t)GPIOA) / 0x400;
-}
+GPIO_TypeDef *GPIO::get_regs() { return (GPIO_TypeDef*) ((port * 0x400) + (uint32_t)GPIOA); }
 
 /**
  * @brief Initialize this GPIO pin.
@@ -55,26 +54,24 @@ uint32_t GPIO::get_portnum() {
  * when there's time.
  */
 void GPIO::init() {
-    uint32_t portnum = get_portnum();
-    pins[portnum]++;
+    pins[port]++;
 
     // Enable the port we're using.
-    SET_BIT(RCC->AHB4ENR, 1 << portnum);
+    SET_BIT(RCC->AHB4ENR, 1 << port);
 
     GPIO_InitTypeDef c{pin, mode, res, GPIO_SPEED_FREQ_LOW, alt};
-    HAL_GPIO_Init(port, &c);
+    HAL_GPIO_Init(regs, &c);
 }
 
 void GPIO::deinit() {
-    uint32_t portnum = get_portnum();
-    pins[portnum]--;
+    pins[port]--;
 
     // If no more pins are using this port, shut off its clock to save
     // some power.
-    if (!pins[portnum])
-        CLEAR_BIT(RCC->AHB4ENR, 1 << portnum);
+    if (!pins[port])
+        CLEAR_BIT(RCC->AHB4ENR, 1 << port);
 
-    HAL_GPIO_DeInit(port, pin);
+    HAL_GPIO_DeInit(regs, pin);
 }
 
 uint8_t GPIO::pins[11] = {0};
