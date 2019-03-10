@@ -41,7 +41,7 @@ void UART::deinit() {
 }
 
 void UART::transmit(uint8_t *data, size_t len) {
-    HAL_UART_Transmit_IT(&handle, data, len);
+    HAL_UART_Transmit(&handle, data, len, HAL_MAX_DELAY);
 }
 
 UART_HandleTypeDef *UART::uart_handles[8];

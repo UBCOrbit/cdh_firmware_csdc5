@@ -1,6 +1,9 @@
 #include "hardware/clock.h"
 #include "hardware/init.h"
+#include "hardware/uart.h"
 #include "os/os.h"
+
+UART uart{UART::U3, 115200, GPIO::D, 8, 9};
 
 /**
  * @brief Main entry point for Trillium's firmware.
@@ -22,6 +25,10 @@
 int main() {
     clock_init();
     hardware_init();
+
+    uart.init();
+    uart.transmit((uint8_t *)"Hello\n", 6);
+    // uart.deinit();
 
     // Does not return.
     os_init();
