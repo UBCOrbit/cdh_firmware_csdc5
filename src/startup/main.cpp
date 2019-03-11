@@ -3,7 +3,11 @@
 #include "hardware/uart.h"
 #include "os/os.h"
 
-UART uart{UART::U3, 115200, GPIO::D, 8, 9};
+UART uart{UART::U3, 9600, GPIO::D, 8, 9};
+GPIO led{GPIO::B, 7, GPIO::OutputPP, GPIO::None, 0};
+
+void init_func();
+StaticTask<128> init_task{"INIT", 0, init_func};
 
 /**
  * @brief Main entry point for Trillium's firmware.
@@ -26,10 +30,18 @@ int main() {
     clock_init();
     hardware_init();
 
-    uart.init();
-    uart.transmit((uint8_t *)"Hello\n", 6);
-    // uart.deinit();
+    init_task.start();
 
     // Does not return.
     os_init();
+}
+
+void init_func() {
+    uart.init();
+    uart.transmit((uint8_t *)"Hello!", 6).block();
+
+    led.init();
+    led.set(true);
+
+    init_task.stop();
 }

@@ -54,7 +54,7 @@ public:
      * @brief Construct a new Static Task object
      *
      * The code that's passed to this will be called repeatedly, so it should
-     * delay at the end up every call.
+     * delay (or stop itself) at the end up every call.
      *
      * @param name Only used for debugging and monitoring of tasks.
      * @param priority This task's priority. Higher priorities will not be

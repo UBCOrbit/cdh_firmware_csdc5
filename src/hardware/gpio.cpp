@@ -41,7 +41,9 @@ bool GPIO::read() { return HAL_GPIO_ReadPin(regs, pin); }
  *
  * @return The number corresponding to the PORT (A = 0, B = 1, ...).
  */
-GPIO_TypeDef *GPIO::get_regs() { return (GPIO_TypeDef*) ((port * 0x400) + (uint32_t)GPIOA); }
+GPIO_TypeDef *GPIO::get_regs() {
+    return (GPIO_TypeDef *)((port * 0x400) + (uint32_t)GPIOA);
+}
 
 /**
  * @brief Initialize this GPIO pin.

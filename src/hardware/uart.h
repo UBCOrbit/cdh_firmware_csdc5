@@ -1,11 +1,13 @@
 #pragma once
 
 #include <stm32h7xx_hal.h>
-#include <tuple>
 
 #include "hardware/gpio.h"
 #include "hardware/hardware.h"
+#include "os/async.h"
 #include "util/lookup.h"
+
+extern "C" void HAL_UART_TxCpltCallback(void *, UART_HandleTypeDef *);
 
 extern "C" void handle_usart1_irq();
 extern "C" void handle_usart2_irq();
@@ -25,7 +27,7 @@ public:
     void init() override;
     void deinit() override;
 
-    void transmit(uint8_t *, size_t len);
+    Async<int> transmit(uint8_t *, size_t len);
 
 protected:
     Port port;
@@ -38,12 +40,18 @@ protected:
 
     USART_TypeDef *get_regs();
 
+    Producer<int> sender;
+
     static USART_TypeDef *const portregs[8];
     static const uint8_t gpio_afs[8];
-    static void (*clk_en_funcs[8])();
-    static void (*clk_dis_funcs[8])();
+    static void (*const en_funcs[8])();
+    static void (*const dis_funcs[8])();
+    static const IRQn_Type irqns[8];
 
+    static UART *uarts[8];
     static UART_HandleTypeDef *uart_handles[8];
+
+    friend void ::HAL_UART_TxCpltCallback(void *, UART_HandleTypeDef *);
 
     friend void ::handle_usart1_irq();
     friend void ::handle_usart2_irq();
