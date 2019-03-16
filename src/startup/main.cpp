@@ -43,9 +43,8 @@ int main() {
 void init_func() {
     uart.init();
     uart.transmit("init complete\n\r")
-        .map([](UART::SendStatus x) { return 2; })
-        .bind([](int x){ return uart.transmit("hello"); })
         .block();
+    uart.deinit();
 
     led.init();
     led.set(true);
