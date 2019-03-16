@@ -20,7 +20,8 @@
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64",
-            "compilerPath": "arm-none-eabi-gcc"
+            "compilerPath": "arm-none-eabi-gcc",
+            "compileCommands": "${workspaceFolder}/compile_commands.json"
         }
     ],
     "version": 4

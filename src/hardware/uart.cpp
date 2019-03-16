@@ -96,6 +96,7 @@ Async<UART::SendStatus> UART::transmit(const uint8_t *data, size_t len) {
 Async<UART::SendStatus> UART::transmit(const char *msg) {
     size_t len = strlen(msg);
     const uint8_t *data = reinterpret_cast<const uint8_t *>(msg);
+    
     return transmit(data, len);
 }
 
