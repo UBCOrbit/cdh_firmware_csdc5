@@ -36,9 +36,16 @@ int main() {
     os_init();
 }
 
+/**
+ * The task that runs immediately after the processor starts.  Unlike
+ * @ref main, it is safe to use asynchronous or blocking calls here.
+ */
 void init_func() {
     uart.init();
-    uart.transmit((uint8_t *)"Hello!", 6).block();
+    uart.transmit("init complete\n\r")
+        .map([](UART::SendStatus x) { return 2; })
+        .bind([](int x){ return uart.transmit("hello"); })
+        .block();
 
     led.init();
     led.set(true);

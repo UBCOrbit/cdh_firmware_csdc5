@@ -49,7 +49,7 @@ GPIO_TypeDef *GPIO::get_regs() {
  * @brief Initialize this GPIO pin.
  *
  * Note: this also enables the clock for the GPIO port in question, but @ref
- * GPIO::deinnit does not disable again after, since other GPIOs might still be
+ * GPIO::deinit does not disable again after, since other GPIOs might still be
  * using it.
  *
  * This mechanism should be replaced by a more robust dependency-tree based one

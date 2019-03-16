@@ -15,3 +15,4 @@ FILE_PATTERNS          = *.c *.h *.s *.cpp
 EXTRACT_ALL            = YES
 SOURCE_BROWSER         = YES
 REFERENCES_LINK_SOURCE = YES
+GENERATE_TAGFILE       = docs/doxy/tags.xml

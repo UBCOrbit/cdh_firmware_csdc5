@@ -67,7 +67,7 @@ public:
         static_assert(stack_size >= configMINIMAL_STACK_SIZE,
                       "Stack size is less than the minimum.");
         handle = xTaskCreateStatic(&callcode, name, stack_size, this, priority,
-                                   stack.data(), &task);
+                                   stack, &task);
         stop();
     }
 
@@ -91,7 +91,7 @@ protected:
     const char *name;
     const uint32_t priority;
     void (*code)();
-    std::array<StackType_t, stack_size> stack;
+    StackType_t stack[stack_size];
 };
 
 /**

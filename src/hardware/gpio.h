@@ -10,7 +10,8 @@
  * Usage example:
  *
  * ```
- * GPIO pin { GPIOB, 14, GPIO::OutputPP, GPIO::None, 0 };
+ * GPIO pin {GPIOB, 14, GPIO::OutputPP, GPIO::None, 0};
+ * pin.init();
  * pin.set(true); // turn the LED on
  * pin.deinit(); // save some power by switching the output off
  * ```
