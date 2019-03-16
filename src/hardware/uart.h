@@ -50,15 +50,17 @@ public:
      * (successfully) by the user, or fail because of a hardware
      * issue.
      */
-    enum class SendStatus { COMPLETE, ABORTED, ERROR };
+    enum class Status { COMPLETE, ABORTED, ERROR };
 
     UART(Port port, uint32_t baud, GPIO::Port gpio, uint8_t tx, uint8_t rx);
 
     void init() override;
     void deinit() override;
 
-    Async<SendStatus> transmit(const uint8_t *, size_t len);
-    Async<SendStatus> transmit(const char *);
+    Async<Status> transmit(const uint8_t *, size_t len);
+    Async<Status> transmit(const char *);
+
+    Async<Status> receive(uint8_t *data, size_t len);
 
 protected:
     Port port;                 //< The UART we own.
@@ -69,7 +71,10 @@ protected:
     GPIO tx_pin; //< GPIO tx pin that we own.
     GPIO rx_pin; //< GPIO rx pin that we own.
 
-    Producer<SendStatus> sender; //< Creates @ref Async instances for us.
+    bool tx, rx; //< Are we currently transmitting or receiving?
+
+    Producer<Status> sender; //< Creates @ref Async instances for us.
+    Producer<Status> receiver;
 
     static USART_TypeDef *const portregs[8];
     static const uint8_t gpio_afs[8];
@@ -86,6 +91,7 @@ protected:
      */
     friend void ::HAL_UART_TxCpltCallback(void *, UART_HandleTypeDef *);
     friend void ::HAL_UART_TxAbortCallback(void *, UART_HandleTypeDef *);
+    friend void ::HAL_UART_RxCpltCallback(void *, UART_HandleTypeDef *);
     friend void ::HAL_UART_ErrorCallback(void *, UART_HandleTypeDef *);
 
     friend void ::handle_usart1_irq();

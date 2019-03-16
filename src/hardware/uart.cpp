@@ -78,7 +78,8 @@ void UART::deinit() {
  * @return A promise that can be blocked on to retrieve the status of
  * the transmission.
  */
-Async<UART::SendStatus> UART::transmit(const uint8_t *data, size_t len) {
+Async<UART::Status> UART::transmit(const uint8_t *data, size_t len) {
+    tx = true;
     HAL_UART_Transmit_IT(&handle, data, len);
     return sender.promise();
 }
@@ -93,14 +94,28 @@ Async<UART::SendStatus> UART::transmit(const uint8_t *data, size_t len) {
  *
  * @return A promise with the transmission status.
  */
-Async<UART::SendStatus> UART::transmit(const char *msg) {
+Async<UART::Status> UART::transmit(const char *msg) {
     size_t len = strlen(msg);
     const uint8_t *data = reinterpret_cast<const uint8_t *>(msg);
     return transmit(data, len);
 }
 
-UART *UART::uarts[8];           //< Pointers to any UARTs in use, so
-                                //  interrupt handlers can access them.
+/**
+ * @brief Receive raw bytes over the UART.
+ *
+ * @param data Pointer to a buffer at least `len` bytes long.
+ * @param len Length of the buffer to receive the data.
+ *
+ * @return A promise with the receive status.
+ */
+Async<UART::Status> UART::receive(uint8_t *data, size_t len) {
+    rx = true;
+    HAL_UART_Receive_IT(&handle, data, len);
+    return receiver.promise();
+}
+
+UART *UART::uarts[8]; //< Pointers to any UARTs in use, so
+                      //  interrupt handlers can access them.
 UART_HandleTypeDef *UART::uart_handles[8]; //< The interrupt callbacks
                                            //  demand we give them HAL
                                            //  handles.
@@ -124,7 +139,8 @@ const IRQn_Type UART::irqns[8] = {
 };
 
 /**
- * Port number to port registers lookup table.  (The HAL wants a register block.)
+ * Port number to port registers lookup table.  (The HAL wants a register
+ * block.)
  */
 USART_TypeDef *const UART::portregs[] = {
     USART1, USART2, USART3, UART4, UART5, USART6, UART7, UART8,
@@ -163,7 +179,11 @@ void (*const UART::dis_funcs[8])() = {
  * complete.
  */
 void HAL_UART_TxCpltCallback(void *d, UART_HandleTypeDef *) {
-    static_cast<UART *>(d)->sender.fulfill_isr(UART::SendStatus::COMPLETE);
+    UART *u = static_cast<UART *>(d);
+    bool wake_up;
+    u->tx = false;
+    wake_up = u->sender.fulfill_isr(UART::Status::COMPLETE);
+    Producer<UART::Status>::yield_isr(wake_up);
 }
 
 /**
@@ -171,15 +191,43 @@ void HAL_UART_TxCpltCallback(void *d, UART_HandleTypeDef *) {
  * been aborted by @ref UART::abort().
  */
 void HAL_UART_TxAbortCallback(void *d, UART_HandleTypeDef *) {
-    static_cast<UART *>(d)->sender.fulfill_isr(UART::SendStatus::ABORTED);
+    UART *u = static_cast<UART *>(d);
+    bool wake_up;
+    u->tx = false;
+    wake_up = u->sender.fulfill_isr(UART::Status::ABORTED);
+    Producer<UART::Status>::yield_isr(wake_up);
+}
+
+/**
+ * @brief Called by the HAL when a nonblocking UART receive is
+ * complete.
+ */
+void HAL_UART_RxCpltCallback(void *d, UART_HandleTypeDef *) {
+    UART *u = static_cast<UART *>(d);
+    bool wake_up;
+    u->rx = false;
+    wake_up = u->receiver.fulfill_isr(UART::Status::COMPLETE);
+    Producer<UART::Status>::yield_isr(wake_up);
 }
 
 /**
  * @brief Called by the HAL when a nonblocking UART operation has
  * failed.
  */
-void HAL_UART_ErrorCallback(void *d, UART_HandleTypeDef *) {
-    static_cast<UART *>(d)->sender.fulfill_isr(UART::SendStatus::ERROR);
+void HAL_UART_ErrorCallback(void *d, UART_HandleTypeDef *uart) {
+    UART *u = static_cast<UART *>(d);
+    bool wake_up = false;
+    if (u->tx) {
+        wake_up |= u->sender.fulfill_isr(UART::Status::ERROR);
+        u->tx = false;
+    }
+    if (u->rx) {
+        wake_up |= u->receiver.fulfill_isr(UART::Status::ERROR);
+        u->rx = false;
+    }
+
+    // If a task was woken up, we have to yield to the kernel.
+    Producer<UART::Status>::yield_isr(wake_up);
 }
 
 /**

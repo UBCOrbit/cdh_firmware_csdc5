@@ -124,11 +124,18 @@ public:
     /**
      * Fulfill our promise, from an interrupt.
      */
-    void fulfill_isr(T x) {
+    bool fulfill_isr(T x) {
         BaseType_t task_woken = 0;
         xQueueSendFromISR(handle, &x, &task_woken);
-        portYIELD_FROM_ISR(task_woken);
+        return task_woken;
     }
+
+    /**
+     * This *must* be called if @ref fulfill_isr returns `true`.  It
+     * should be called with the or'd results of all fulfills from
+     * this ISR.
+     */
+    static void yield_isr(bool woke) { portYIELD_FROM_ISR(woke); }
 
 protected:
     StaticQueue_t queue;
