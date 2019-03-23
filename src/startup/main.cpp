@@ -47,7 +47,7 @@ void init_func() {
     uart.deinit();
 
     led.init();
-    led.set(true);
+    led.write(true);
 
     init_task.stop();
 }

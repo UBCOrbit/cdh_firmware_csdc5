@@ -24,7 +24,7 @@ GPIO::GPIO(GPIO::Port port, uint32_t pin, GPIO::Mode mode, GPIO::Resistor res,
  *
  * @param on true = HIGH, false = LOW
  */
-void GPIO::set(bool on) { HAL_GPIO_WritePin(regs, pin, (GPIO_PinState)on); }
+void GPIO::write(bool on) { HAL_GPIO_WritePin(regs, pin, (GPIO_PinState)on); }
 
 /**
  * @brief Read a digital pin.

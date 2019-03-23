@@ -12,7 +12,7 @@
  * ```
  * GPIO pin {GPIOB, 14, GPIO::OutputPP, GPIO::None, 0};
  * pin.init();
- * pin.set(true); // turn the LED on
+ * pin.write(true); // turn the LED on
  * pin.deinit(); // save some power by switching the output off
  * ```
  */
@@ -49,7 +49,7 @@ public:
 
     GPIO(Port port, uint32_t pin, Mode mode, Resistor res, uint32_t alt);
 
-    void set(bool on);
+    void write(bool on);
     bool read();
 
     void init() override;
