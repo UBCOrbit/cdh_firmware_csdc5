@@ -12,7 +12,10 @@ SPI::SPI(SPI::Port port, uint32_t baud, GPIO::Port gpio, uint8_t miso, uint8_t m
         slck(gpio,slck, GPIO::Mode::AlternatePP, GPIO::Resistor::None,
              gpio_afs[port]), 
         nss(gpio,nss, GPIO::Mode::AlternatePP, GPIO::Resistor::None,
-             gpio_afs[port]){
+             gpio_afs[port]),
+        mode(mode),
+        direction(direction),
+        nss_mode(nss_mode){
         spis[port] = this;
     }
 
@@ -21,6 +24,36 @@ SPI::SPI(SPI::Port port, uint32_t baud, GPIO::Port gpio, uint8_t miso, uint8_t m
  * GPIOs and installing interrupt handlers, too.
  */
  void SPI::init(){
+     uint32_t baud_prescaler;
+
+
+
+
+    handle.Instance = regs;
+    handle.Init = {
+        mode,
+        direction,
+        SPI_DATASIZE_4BIT,
+        SPI_POLARITY_LOW,
+        SPI_PHASE_1EDGE,
+        nss_mode,
+        baud_prescalar,
+        SPI_FIRSTBIT_MSB,
+        SPI_TIMODE_DISABLE,
+        SPI_CRCCALCULATION_DISABLE,
+        7,
+        SPI_CRC_LENGTH_DATASIZE,
+        SPI_NSS_PULSE_DISABLE,
+        SPI_NSS_POLARITY_LOW,
+        SPI_FIFO_THRESHOLD_01DATA,
+        SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN,
+        SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN,
+        SPI_MASTER_SS_IDLENESS_00CYCLE,
+        SPI_MASTER_INTERDATA_IDLENESS_00CYCLE,
+        SPI_MASTER_RX_AUTOSUSP_DISABLE,
+        SPI_MASTER_KEEP_IO_STATE_DISABLE,
+        SPI_IO_SWAP_DISABLE,
+    };
 
     miso.init();
     mosi.init();
@@ -89,7 +122,7 @@ SPI_HandleTypeDef *SPI::spi_handles[6]; //< The interrupt callbacks
  * used.
  */
 const uint8_t SPI::gpio_afs[] = {
-    0, 0, GPIO_AF7_SPI3, 0, 0, 0,
+    GPIO_AF5_SPI1, GPIO_AF5_SPI2, GPIO_AF5_SPI3, GPIO_AF5_SPI4, GPIO_AF5_SPI5, GPIO_AF5_SPI6,
 };
 
 /**

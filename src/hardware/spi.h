@@ -48,6 +48,9 @@ protected:
     SPI_TypeDef *regs;        //< Pointer to our register block;
     uint32_t baud;            //< Intended baudrate.
     SPI_HandleTypeDef handle; //< HAL Handle for the SPI.
+    uint32_t mode;            //
+    uint32_t nss_mode;
+    uint32_t direction;
 
     GPIO miso; //< GPIO miso pin that we own
     GPIO mosi; //< GPIO mosi pin that we own
