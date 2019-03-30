@@ -22,25 +22,28 @@ include_directories(packages/cmsis)
 include_directories(packages/hal/Inc)
 include_directories(packages/freertos/include)
 include_directories(packages/freertos/portable/GCC/ARM_CM7/r0p1)
+include_directories(packages/libhydrogen)
 
 aux_source_directory(packages/hal/Src HAL_SOURCES)
 aux_source_directory(packages/freertos RTOS_SOURCES)
 aux_source_directory(packages/freertos/portable/GCC/ARM_CM7/r0p1 RTOS_SOURCES)
+aux_source_directory(packages/libhydrogen HYDROGEN_SOURCES)
 
 add_library(sthal STATIC ${HAL_SOURCES})
 add_library(freertos STATIC ${RTOS_SOURCES})
+add_library(hydrogen STATIC ${HYDROGEN_SOURCES})
 
 add_executable(csdc5-a.elf ${SOURCES} ${ASM_SOURCES})
 set_target_properties(csdc5-a.elf PROPERTIES COMPILE_DEFINITIONS "TRILLIUM=1")
-target_link_libraries(csdc5-a.elf sthal freertos)
+target_link_libraries(csdc5-a.elf sthal freertos hydrogen)
 
 add_executable(csdc5-b.elf ${SOURCES} ${ASM_SOURCES})
 set_target_properties(csdc5-b.elf PROPERTIES COMPILE_DEFINITIONS "TRILLIUM=2")
-target_link_libraries(csdc5-b.elf sthal freertos)
+target_link_libraries(csdc5-b.elf sthal freertos hydrogen)
 
 add_executable(csdc5-c.elf ${SOURCES} ${ASM_SOURCES})
 set_target_properties(csdc5-c.elf PROPERTIES COMPILE_DEFINITIONS "TRILLIUM=3")
-target_link_libraries(csdc5-c.elf sthal freertos)
+target_link_libraries(csdc5-c.elf sthal freertos hydrogen)
 
 add_compile_options("-Wall" "-Wextra" "-fexceptions")
 
