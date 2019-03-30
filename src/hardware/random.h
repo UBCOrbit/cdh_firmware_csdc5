@@ -2,6 +2,8 @@
 
 #include "hardware/hardware.h"
 
+#include <stm32h7xx_hal.h>
+
 /**
  * @brief Access to the hardware RNG and a psuedorandom generator seeded by it.
  */

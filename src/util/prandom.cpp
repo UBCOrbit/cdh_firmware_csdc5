@@ -14,7 +14,7 @@ bool PRandom::init(uint32_t seed) {
                 return true;
             }
             hydro_init_buffer[hydro_counter + i] = seed & 0xFF;
-            seed >> sizeof(uint8_t);
+            seed >>= sizeof(uint8_t);
         }
         hydro_counter += sizeof(seed);
         return hydro_counter >= HYDRO_INIT_BUFFER_SIZE;

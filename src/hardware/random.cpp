@@ -1,6 +1,4 @@
-#include "hardware/random.h"
-
-#include <stm32h7xx_hal.h>
+#include "random.h"
 
 /**
  * @brief Initialize the hardware RNG.
