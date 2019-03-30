@@ -1,7 +1,5 @@
 #pragma once
 
-#include <random>
-
 #include "hardware/hardware.h"
 
 /**
@@ -12,11 +10,9 @@ public:
     void init() override;
     void deinit() override;
 
-    uint32_t operator()();
-    // Sorry! No secure random number generation for now while I sort out
-    // blocking operations.
+    uint32_t generate();
 
 protected:
     RNG_HandleTypeDef handle; //< Handle to the hardware for secure rng.
-    std::mt19937 twister; //< Pseudorandom number generate state for fast rng.
+
 };
