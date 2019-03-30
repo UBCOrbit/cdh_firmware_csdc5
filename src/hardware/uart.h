@@ -48,9 +48,18 @@ public:
      *
      * A transmission can either complete successfully, be aborted
      * (successfully) by the user, or fail because of a hardware
-     * issue.
+     * issue.  DMA errors aren't included because we are not enabling
+     * DMA mode.
      */
-    enum class Status { COMPLETE, ABORTED, ERROR };
+    enum class Status {
+        COMPLETE,
+        ABORTED,
+        ERROR_PARITY,
+        ERROR_NOISE,
+        ERROR_FRAME,
+        ERROR_OVERRUN,
+        ERROR_UNKNOWN,
+    };
 
     UART(Port port, uint32_t baud, GPIO::Port gpio, uint8_t tx, uint8_t rx);
 

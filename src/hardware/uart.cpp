@@ -47,7 +47,7 @@ void UART::init() {
     rx_pin.init();
 
     // initialize the clock and interrupt
-    en_funcs[port]();
+    clk_en_funcs[port]();
     HAL_NVIC_SetPriority(irqns[port], 14, 15);
     HAL_NVIC_EnableIRQ(irqns[port]);
 
@@ -62,7 +62,7 @@ void UART::init() {
  */
 void UART::deinit() {
     HAL_UART_DeInit(&handle);
-    dis_funcs[port]();
+    clk_dis_funcs[port]();
     HAL_NVIC_DisableIRQ(irqns[port]);
 
     rx_pin.deinit();
@@ -149,7 +149,7 @@ USART_TypeDef *const UART::uart_registers[] = {
 /**
  * Functions to enable UART clocks by number.
  */
-void (*const UART::en_funcs[8])() = {
+void (*const UART::clk_en_funcs[8])() = {
     []() { __HAL_RCC_USART1_CLK_ENABLE(); },
     []() { __HAL_RCC_USART2_CLK_ENABLE(); },
     []() { __HAL_RCC_USART3_CLK_ENABLE(); },
@@ -163,7 +163,7 @@ void (*const UART::en_funcs[8])() = {
 /**
  * Functions to disable UART clocks by number.
  */
-void (*const UART::dis_funcs[8])() = {
+void (*const UART::clk_dis_funcs[8])() = {
     []() { __HAL_RCC_USART1_CLK_DISABLE(); },
     []() { __HAL_RCC_USART2_CLK_DISABLE(); },
     []() { __HAL_RCC_USART3_CLK_DISABLE(); },
@@ -216,13 +216,31 @@ void HAL_UART_RxCpltCallback(void *d, UART_HandleTypeDef *) {
  */
 void HAL_UART_ErrorCallback(void *d, UART_HandleTypeDef *uart) {
     UART *u = static_cast<UART *>(d);
+    UART::Status err;
+    switch (uart->ErrorCode) {
+    case HAL_UART_ERROR_PE:
+        err = UART::Status::ERROR_PARITY;
+        break;
+    case HAL_UART_ERROR_NE:
+        err = UART::Status::ERROR_NOISE;
+        break;
+    case HAL_UART_ERROR_FE:
+        err = UART::Status::ERROR_FRAME;
+        break;
+    case HAL_UART_ERROR_ORE:
+        err = UART::Status::ERROR_OVERRUN;
+        break;
+    default:
+        err = UART::Status::ERROR_UNKNOWN;
+    }
+
     bool wake_up = false;
     if (u->tx) {
-        wake_up |= u->sender.fulfill_isr(UART::Status::ERROR);
+        wake_up |= u->sender.fulfill_isr(err);
         u->tx = false;
     }
     if (u->rx) {
-        wake_up |= u->receiver.fulfill_isr(UART::Status::ERROR);
+        wake_up |= u->receiver.fulfill_isr(err);
         u->rx = false;
     }
 
