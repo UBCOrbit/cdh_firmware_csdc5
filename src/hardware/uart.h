@@ -76,10 +76,10 @@ protected:
     Producer<Status> sender; //< Creates @ref Async instances for us.
     Producer<Status> receiver;
 
-    static USART_TypeDef *const portregs[8];
+    static USART_TypeDef *const uart_registers[8];
     static const uint8_t gpio_afs[8];
-    static void (*const en_funcs[8])();
-    static void (*const dis_funcs[8])();
+    static void (*const clk_en_funcs[8])();
+    static void (*const clk_dis_funcs[8])();
     static const IRQn_Type irqns[8];
 
     static UART *uarts[8];

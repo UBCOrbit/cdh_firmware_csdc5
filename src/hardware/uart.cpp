@@ -15,7 +15,7 @@
  */
 UART::UART(UART::Port port, uint32_t baud, GPIO::Port gpio, uint8_t tx,
            uint8_t rx)
-    : port(port), regs(portregs[port]), baud(baud),
+    : port(port), regs(uart_registers[port]), baud(baud),
       tx_pin(gpio, tx, GPIO::Mode::AlternatePP, GPIO::Resistor::None,
              gpio_afs[port]),
       rx_pin(gpio, rx, GPIO::Mode::AlternatePP, GPIO::Resistor::None,
@@ -142,7 +142,7 @@ const IRQn_Type UART::irqns[8] = {
  * Port number to port registers lookup table.  (The HAL wants a register
  * block.)
  */
-USART_TypeDef *const UART::portregs[] = {
+USART_TypeDef *const UART::uart_registers[] = {
     USART1, USART2, USART3, UART4, UART5, USART6, UART7, UART8,
 };
 

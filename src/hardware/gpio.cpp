@@ -12,7 +12,7 @@
  * @param mode Input/output/alternate as well as the push-pull/open drain mode.
  * @param res Pull-up/pull-down resistor configuration.
  * @param alt If `mode` is @ref GPIO::AlternatePP or @ref GPIO::AlternateOD,
- * this selects the alternae function.
+ * this selects the alternate function.
  */
 GPIO::GPIO(GPIO::Port port, uint32_t pin, GPIO::Mode mode, GPIO::Resistor res,
            uint32_t alt)
