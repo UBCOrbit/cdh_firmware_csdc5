@@ -13,8 +13,16 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
+include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/../../../../arm-none-eabi/include/c++/8.3.0")
+include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/../../../../arm-none-eabi/include/c++/8.3.0/arm-none-eabi")
+include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/../../../../arm-none-eabi/include/c++/8.3.0/backward")
+include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/include")
+
+include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/include-fixed")
+include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/../../../../arm-none-eabi/include")
+
 set(FLAGS_COMMON "-target armv7em-none-eabihf -I/usr/arm-none-eabi/include" CACHE INTERNAL "C / C++ common Flags")
-set(FLAGS_CXX "-fno-unwind-tables -fno-exceptions -fno-rtti" CACHE INTERNAL "C++ only Flags")
+set(FLAGS_CXX "-std=c++17 -Wno-register -fno-unwind-tables -fno-exceptions -fno-rtti" CACHE INTERNAL "C++ only Flags")
 set(FLAGS_C "" CACHE INTERNAL "C only Flags")
 set(FLAGS_LINKER "-Wl,--gc-sections -L/usr/arm-none-eabi/lib -nostdlib -Tmem.ld -lstdc++ -lc -lm -lnosys -Wl,-Map=bin/${CMAKE_PROJECT_NAME}.map" CACHE INTERNAL "Linker flags")
 

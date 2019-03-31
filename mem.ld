@@ -45,13 +45,19 @@ SECTIONS {
 		. = ALIGN(4);
 	} >FLASH
 
+        .init_array : {
+		__init_array_start = .;
+		KEEP (*(.init_array*))
+		__init_array_end = .;
+        } >FLASH
+
 	/* This data can stay in flash (like const char* etc) */
 	.rodata : {
 		. = ALIGN(4);
 		*(.rodata)
 		*(.rodata*)
 		. = ALIGN(4);
-	} > FLASH
+	} >FLASH
 
 	/*
 	 * Any global variables that need to be initialized.
@@ -72,7 +78,7 @@ SECTIONS {
 	/*
 	 * Zero-initialized data doesn't take up any space in ram,
 	 * but src/startup.s needs to zero it out prior to main().
-	*/
+	 */
 	.bss : {
 		. = ALIGN(4);
 		bss_start = .;

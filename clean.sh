@@ -18,3 +18,9 @@ if [ -d bin ]
 then
     rm -rf bin
 fi
+
+# delete doxygen documentation
+if [ -d docs/doxy ]
+then
+    rm -rf docs/doxy
+fi

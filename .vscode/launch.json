@@ -7,10 +7,10 @@
             "request": "launch",
             "miDebuggerPath": "arm-none-eabi-gdb",
             "targetArchitecture": "arm",
-            "program": "${workspaceRoot}/bin/csdc5.elf",
+            "program": "${workspaceRoot}/bin/csdc5-a.elf",
             "setupCommands": [
                 {
-                    "text": "file '${workspaceRoot}/bin/csdc5.elf'"
+                    "text": "file '${workspaceRoot}/bin/csdc5-a.elf'"
                 },
                 {
                     "text": "target remote localhost:3333"
@@ -19,7 +19,7 @@
                     "text": "monitor reset halt"
                 },
                 {
-                    "text": "load ${workspaceRoot}/bin/csdc5.elf"
+                    "text": "load ${workspaceRoot}/bin/csdc5-a.elf"
                 }
             ],
             "preLaunchTask": "make",

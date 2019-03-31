@@ -16,7 +16,7 @@
         {
             "label": "flash",
             "type": "shell",
-            "command": "openocd -f openocd.cfg -c 'program bin/csdc5.elf verify reset exit'",
+            "command": "openocd -f openocd.cfg -c 'program bin/csdc5-a.elf verify reset exit'",
             "group": "build",
             "dependsOn": "make",
             "problemMatcher": []

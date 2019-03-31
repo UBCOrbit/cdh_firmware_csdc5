@@ -56,3 +56,6 @@ CMakeFiles/
 Makefile
 cmake_install.cmake
 compile_commands.json
+
+.cquery_cached_index
+docs/doxy
