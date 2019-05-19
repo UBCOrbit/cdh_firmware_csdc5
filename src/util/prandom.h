@@ -4,6 +4,7 @@
 
 class PRandom {
 public:
+
     bool init(uint32_t seed);
 
     uint32_t fast();

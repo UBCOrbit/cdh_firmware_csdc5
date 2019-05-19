@@ -12,7 +12,7 @@ public:
     void init() override;
     void deinit() override;
 
-    uint32_t generate();
+    uint32_t operator()();
 
 protected:
     RNG_HandleTypeDef handle; //< Handle to the hardware for secure rng.

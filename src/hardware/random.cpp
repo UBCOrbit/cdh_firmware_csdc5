@@ -16,8 +16,8 @@ void Random::deinit() {
     __HAL_RCC_RNG_CLK_DISABLE();
 }
 
-uint32_t Random::generate() { 
+uint32_t Random::operator()() {
     uint32_t number;
-    HAL_RNG_GenerateRandomNumber(&handle, &number);
+    number = HAL_RNG_GenerateRandomNumber(&handle, &number);
     return number;
 }

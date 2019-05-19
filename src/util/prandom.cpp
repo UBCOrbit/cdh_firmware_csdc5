@@ -6,6 +6,7 @@ bool PRandom::init(uint32_t seed) {
     static bool twister_initialized = false;
     if (!twister_initialized) {
         twister.seed(seed);
+        twister_initialized = true;
         return false;
     } else {
         static size_t hydro_counter = 0;
