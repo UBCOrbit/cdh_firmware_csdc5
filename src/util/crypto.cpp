@@ -1,5 +1,7 @@
 #include "crypto.h"
+
 #include "hardware/random.h"
+#include "prandom.h"
 #include <hydrogen.h>
 
 static const char* CONTEXT = "General";
@@ -7,6 +9,10 @@ const size_t CRYPTO_KEY_SIZE = hydro_secretbox_KEYBYTES;
 const size_t CRYPTO_HEADER_SIZE = hydro_secretbox_HEADERBYTES;
 const int CRYPTO_SUCCESS = 0;
 const int CRYPTO_MESSAGE_FORGED = 1;
+
+void crypto_init(Random &random) {
+    PRandom prandom(random);
+}
 
 void key_generate(void *key) {
     hydro_secretbox_keygen((uint8_t*)key);

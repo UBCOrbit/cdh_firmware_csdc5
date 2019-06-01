@@ -1,5 +1,7 @@
 #pragma once
 
+#include "hardware/random.h"
+
 #include <cstddef>
 #include <cstdint>
 
@@ -20,6 +22,14 @@ extern const size_t CRYPTO_HEADER_SIZE;
  */
 extern const int CRYPTO_SUCCESS;
 extern const int CRYPTO_MESSAGE_FORGED;
+
+/**
+ * @brief Initialize the crypto library.
+ *
+ * @param random An instance of Random class to use to initialize
+ *        the library.
+ */
+void crypto_init(Random &random);
 
 /**
  * @brief Generate an encryption key.

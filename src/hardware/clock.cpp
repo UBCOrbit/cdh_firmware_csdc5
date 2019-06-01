@@ -33,4 +33,11 @@ const uint8_t D1CorePrescTable[16] = {0, 0, 0, 0, 1, 2, 3, 4,
 void clock_init() {
     HAL_RCCEx_GetD1SysClockFreq();
     HAL_RCC_GetHCLKFreq();
+
+    __HAL_RCC_PLL_ENABLE();
+    __HAL_RCC_PLLCLKOUT_ENABLE(RCC_PLL1_DIVQ);
+    __HAL_RCC_PLL_CONFIG(RCC_PLLSOURCE_HSI, 32, 128, 2, 1, 1);
+
+    SET_BIT(RCC->D2CCIP2R, RCC_D2CCIP2R_RNGSEL_0);
+    CLEAR_BIT(RCC->D2CCIP2R, RCC_D2CCIP2R_RNGSEL_1);
 }

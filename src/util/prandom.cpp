@@ -2,25 +2,24 @@
 
 #include <hydrogen.h>
 
-bool PRandom::init(uint32_t seed) {
-    static bool twister_initialized = false;
-    if (!twister_initialized) {
-        twister.seed(seed);
-        twister_initialized = true;
-        return false;
-    } else {
-        static size_t hydro_counter = 0;
-        for (size_t i = 0; i < sizeof(seed); i++) {
-            if (hydro_counter + i >= HYDRO_INIT_BUFFER_SIZE) { 
-                return true;
+PRandom::PRandom(Random &random) {
+    while (true) {
+        uint32_t seed = random();
+
+        if (hydro_init_buffer_counter < HYDRO_INIT_BUFFER_SIZE) {
+            for (
+              size_t i = 0;
+              i < sizeof(seed) && hydro_init_buffer_counter < HYDRO_INIT_BUFFER_SIZE;
+              i++, hydro_init_buffer_counter++
+            ) {
+                hydro_init_buffer[hydro_init_buffer_counter] = seed & 0xFF;
+                seed >>= sizeof(uint8_t);
             }
-            hydro_init_buffer[hydro_counter + i] = seed & 0xFF;
-            seed >>= sizeof(uint8_t);
+        } else {
+            twister.seed(seed);
+            break;
         }
-        hydro_counter += sizeof(seed);
-        return hydro_counter >= HYDRO_INIT_BUFFER_SIZE;
     }
-    return true;
 }
 
 uint32_t PRandom::fast() {

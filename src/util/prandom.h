@@ -1,11 +1,12 @@
 #pragma once
 
 #include <random>
+#include "hardware/random.h"
 
 class PRandom {
 public:
 
-    bool init(uint32_t seed);
+    PRandom(Random &random);
 
     uint32_t fast();
     uint32_t secure();

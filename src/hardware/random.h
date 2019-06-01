@@ -9,6 +9,9 @@
  */
 class Random : public Hardware {
 public:
+
+    Random() { handle.Instance = RNG; }
+
     void init() override;
     void deinit() override;
 
