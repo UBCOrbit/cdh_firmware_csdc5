@@ -33,9 +33,10 @@ const char *debug_getline(UART &uart) {
 
     while (true) {
         uart.receive((uint8_t *)buf + i, 1).block();
-        buf[i + 1] = 0;
-        if (buf[i] == '\r')
+        if (buf[i] == '\r') {
+            buf[i + 1] = 0;
             break;
+        }
         if (buf[i] == '\177') {
             if (i != 0) {
                 uart.transmit("\b \b").block();
