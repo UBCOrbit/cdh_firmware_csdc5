@@ -1,22 +1,23 @@
 #pragma once
 
-#include <random>
-
 #include "hardware/hardware.h"
+
+#include <stm32h7xx_hal.h>
 
 /**
  * @brief Access to the hardware RNG and a psuedorandom generator seeded by it.
  */
 class Random : public Hardware {
 public:
+
+    Random() { handle.Instance = RNG; }
+
     void init() override;
     void deinit() override;
 
     uint32_t operator()();
-    // Sorry! No secure random number generation for now while I sort out
-    // blocking operations.
 
 protected:
     RNG_HandleTypeDef handle; //< Handle to the hardware for secure rng.
-    std::mt19937 twister; //< Pseudorandom number generate state for fast rng.
+
 };
