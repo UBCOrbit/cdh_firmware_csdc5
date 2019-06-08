@@ -22,6 +22,10 @@ PRandom::PRandom(Random &random) {
     }
 }
 
+PRandom::PRandom(PRandom &prandom) {
+    twister.seed(prandom.secure());
+}
+
 uint32_t PRandom::fast() {
     return twister();
 }

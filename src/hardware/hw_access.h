@@ -1,10 +1,8 @@
 #pragma once
 
 #include "hardware.h"
-#include "freertos/include/semphr.h"
-
-template<typename T>
-class HwOwner;
+#include "FreeRTOS.h"
+#include "semphr.h"
 
 template<typename T>
 class HwAccess;
@@ -14,11 +12,9 @@ class HwOwner {
 
 public:
 
-    friend class HwAccess;
-
     HwOwner() { 
         refcount = 0;
-        sam_schweigel = xSemaphoreCreateMutex();
+        sam_schweigel = xSemaphoreCreateMutexStatic(&sams_buffer);
     }
 
     HwOwner(const HwOwner& o) = delete;
@@ -27,7 +23,7 @@ public:
     HwOwner(HwOwner&& o) = delete;
     HwOwner& operator=(HwOwner&& o) = delete;
 
-    HwAccess get_access() {
+    HwAccess<T> get_access() {
         if (refcount == 0) {
             hw.init();
         }
@@ -37,16 +33,17 @@ public:
 
 private:
 
-    friend class HwAccess;
+    friend class HwAccess<T>;
 
-    void remove_access(const HwAccess& a) {
+    void remove_access(const HwAccess<T>& a) {
         --refcount;
-        if (owned.refcount == 0) { hw.deinit(); }
+        if (refcount == 0) { hw.deinit(); }
     }
 
     T hw;
     uint32_t refcount;
     SemaphoreHandle_t sam_schweigel;
+    StaticSemaphore_t sams_buffer;
 
 };
 
@@ -54,23 +51,27 @@ template<typename T>
 class HwAccess {
 public:
 
-    HwAccess() {
-        owned.remove_access(*this);
-    }
+    ~HwAccess() { owner.remove_access(*this); }
+
+    void end() { owner.remove_access(*this); }
 
     void get_exclusive() {
-        xSemaphoreTake(owned.sam_schweigel, portMAX_DELAY);
+        xSemaphoreTake(owner.sam_schweigel, portMAX_DELAY);
     }
 
     void release_exclusive() {
-        xSemaphoreGive(owned.sam_schweigel);
+        xSemaphoreGive(owner.sam_schweigel);
     }
+
+    T* operator->() { return &owner.hw; }
+
+    T& operator*() { return owner.hw; }
 
 private:
 
-    friend class HwOwner;
+    friend class HwOwner<T>;
 
-    HwAccess(const OwnedHw& o): owned(o) {}
+    HwAccess(HwOwner<T>& o): owner(o) {}
 
     HwAccess(const HwAccess& s) = delete;
     HwAccess& operator=(const HwAccess& s) = delete;
@@ -78,6 +79,6 @@ private:
     HwAccess(HwAccess&& s) = delete;
     HwAccess& operator=(HwAccess&& s) = delete;
 
-    OwnedHw<T>& owned;
+    HwOwner<T>& owner;
 
 };
