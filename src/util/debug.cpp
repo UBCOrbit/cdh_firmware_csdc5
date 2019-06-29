@@ -51,4 +51,4 @@ const char *debug_getline(UART &uart) {
     uart.transmit("\r\n").block();
 
     return buf;
-} // :D
+}
