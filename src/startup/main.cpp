@@ -36,6 +36,9 @@ int main() {
     os_init();
 }
 
+#include "hardware/hw_access.h"
+#include "hardware/gpio_new.h"
+
 /**
  * The task that runs immediately after the processor starts.  Unlike
  * @ref main, it is safe to use asynchronous or blocking calls here.
