@@ -46,7 +46,7 @@ int main() {
  */
 void init_func() {
     uart.init();
-    
+
     pin.configure(GPIOPin::Mode::OutputPP, GPIOPin::Resistor::None, 0);
     for (int i = 0; i < 3; i++) {
         vTaskDelay(1000);

@@ -1,11 +1,10 @@
 #pragma once
 
-#include <random>
 #include "hardware/random.h"
+#include <random>
 
 class PRandom {
 public:
-
     PRandom(Random &random);
     PRandom(PRandom &prandom);
 

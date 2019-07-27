@@ -46,14 +46,15 @@ void key_generate(void *key);
  * @param plain_bytes Size of plain data in bytes.
  * @param key Pointer to key data.
  * @param encrypted Pointer to a buffer to write encrypted message to.
- *        The size of encrypted buffer should equal to plain_bytes + HEADER_SIZE.
+ *        The size of encrypted buffer should equal to plain_bytes +
+ * HEADER_SIZE.
  * @param msg_id Optional user purpose message id.
- * 
+ *
  * @return Return success code of the operation.
  */
 int encrypt(const void *plain, const size_t plain_bytes, const void *key,
             void *encrypted, const uint64_t msg_id = 0);
-            
+
 /**
  * @brief Decrypt a message.
  *
@@ -61,10 +62,11 @@ int encrypt(const void *plain, const size_t plain_bytes, const void *key,
  * @param encrypted_bytes Size of encrypted data in bytes.
  * @param key Pointer to key data.
  * @param plain Pointer to a buffer to write decrypted message to.
- *        The size of decrypted buffer should equal to encrypted_bytes - HEADER_SIZE.
+ *        The size of decrypted buffer should equal to encrypted_bytes -
+ * HEADER_SIZE.
  * @param msg_id Optional expected message id.
- * 
+ *
  * @return Return success code of the operation.
  */
-int decrypt(const void *encrypted, const size_t encrypted_bytes, const void *key,
-            void *plain, const uint64_t msg_id = 0);
+int decrypt(const void *encrypted, const size_t encrypted_bytes,
+            const void *key, void *plain, const uint64_t msg_id = 0);
