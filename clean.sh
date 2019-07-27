@@ -7,6 +7,12 @@ then
     rm Makefile
 fi
 
+if [ -f build.ninja ]
+then
+    ninja clean
+    rm -f build.ninja rules.ninja .ninja_deps .ninja_log
+fi
+
 # delete cmake's mess
 if [ -f CMakeCache.txt ]
 then

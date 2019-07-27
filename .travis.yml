@@ -6,6 +6,7 @@ addons:
       - cmake
       - ninja-build
       - cppcheck
+      - clang
 script:
   - sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa -y
   - sudo apt-get update -q
@@ -15,4 +16,4 @@ script:
   - ninja
   - cppcheck src/
   - for f in src/**/*.cpp; do clang-format $f | diff -u $f -; done
-
+  - ./analyze.sh
