@@ -1,8 +1,8 @@
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
-set(CMAKE_C_COMPILER /usr/lib/clang/ccc-analyzer)
-set(CMAKE_CXX_COMPILER /usr/lib/clang/c++-analyzer)
+set(CMAKE_C_COMPILER clang)
+set(CMAKE_CXX_COMPILER clang)
 set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
 set(CMAKE_SIZE llvm-size)
 
