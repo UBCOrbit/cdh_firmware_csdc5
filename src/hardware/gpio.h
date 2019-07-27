@@ -7,9 +7,27 @@
 
 class GPIOPort;
 
+/**
+ * @brief OO wrapper for GPIO pins.
+ *
+ * Usage example:
+ *
+ * ```
+ * HwAccess<GPIOPOrt> port_access = GPIO_B.get_access();
+ * GPIOPin pin = port_access->get_pin(8);
+ * pin.configure(GPIOPin::Mode::OutputPP, GPIOPin::Resistor::None, 0);
+ * pin.write(true);
+ * ```
+ */
 class GPIOPin {
 public:
 
+    /**
+     * @brief Type-safe mode selection.
+     * 
+     * Technically, this combines both the "mode" field of the GPIO peripheral
+     * with the "push-pull" field.
+     */
     enum Mode {
         Input = GPIO_MODE_INPUT,
         OutputPP = GPIO_MODE_OUTPUT_PP,
@@ -19,6 +37,9 @@ public:
         Analog = GPIO_MODE_ANALOG,
     };
 
+    /**
+     * @brief Enumeration for possible resistor configurations.
+     */
     enum Resistor {
         None = GPIO_NOPULL,
         Pullup = GPIO_PULLUP,
@@ -56,6 +77,18 @@ private:
 
 };
 
+/**
+ * @brief OO wrapper for GPIO ports.
+ *
+ * Usage example:
+ *
+ * ```
+ * HwAccess<GPIOPOrt> port_access = GPIO_B.get_access();
+ * GPIOPin pin = port_access->get_pin(8);
+ * pin.configure(GPIOPin::Mode::OutputPP, GPIOPin::Resistor::None, 0);
+ * pin.write(true);
+ * ```
+ */
 class GPIOPort : public Hardware {
 public:
 
