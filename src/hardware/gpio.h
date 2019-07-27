@@ -31,18 +31,28 @@ public:
     void write(bool on);
     bool read();
 
+    GPIOPin(const GPIOPin& pin) = default;
+    GPIOPin& operator=(const GPIOPin& pin) = default;
+
 private:
 
     friend class GPIOPort;
 
-    GPIOPin(GPIOPort& port, uint32_t pin): port(port), pin(1 << pin) {}
-    GPIOPin(const GPIOPin& p): port(p.port), pin(p.pin), mode(p.mode), res(p.res), alt(p.alt) {}
+    struct GPIOPinState {
 
-    GPIOPort& port;
-    uint32_t pin;
-    Mode mode;
-    Resistor res;
-    uint32_t alt;
+        GPIOPinState(GPIOPort& port, uint32_t pin): port(port), pin(1 << pin) {}
+
+        const GPIOPort& port;
+        const uint32_t pin;
+        
+        Mode mode;
+        Resistor res;
+        uint32_t alt;
+    };
+
+    GPIOPin(GPIOPinState& state): state(state) {}
+
+    GPIOPinState& state;
 
 };
 
@@ -54,7 +64,7 @@ public:
     GPIOPort(Port port);
     GPIOPort(const GPIOPort& port) = delete;
 
-    GPIOPin& get_pin(uint32_t pin);
+    GPIOPin get_pin(uint32_t pin);
 
     void init() override;
     void deinit() override;
@@ -64,7 +74,7 @@ private:
     friend class GPIOPin;
 
     Port port;
-    GPIOPin pins[16];
+    GPIOPin::GPIOPinState pin_states[16];
     GPIO_TypeDef *regs;
 
 };

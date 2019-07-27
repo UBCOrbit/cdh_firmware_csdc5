@@ -13,13 +13,13 @@
  * @param tx The pin to transmit on.
  * @param rx The pin to receive on.
  */
-UART::UART(UART::Port port, uint32_t baud, GPIO::Port gpio, uint8_t tx,
+UART::UART(UART::Port port, uint32_t baud, HwOwner<GPIOPort>& gpio_port, uint8_t tx,
            uint8_t rx)
-    : port(port), regs(uart_registers[port]), baud(baud),
-      tx_pin(gpio, tx, GPIO::Mode::AlternatePP, GPIO::Resistor::None,
-             gpio_afs[port]),
-      rx_pin(gpio, rx, GPIO::Mode::AlternatePP, GPIO::Resistor::None,
-             gpio_afs[port]) {
+    : port(port), regs(uart_registers[port]), baud(baud), gpio_port_access(gpio_port.get_access()),
+      tx_pin(gpio_port_access->get_pin(tx)), rx_pin(gpio_port_access->get_pin(rx))
+{
+    tx_pin.configure(GPIOPin::Mode::AlternatePP, GPIOPin::Resistor::None, gpio_afs[port]);
+    rx_pin.configure(GPIOPin::Mode::AlternatePP, GPIOPin::Resistor::None, gpio_afs[port]);
     uarts[port] = this;
 }
 
@@ -42,10 +42,6 @@ void UART::init() {
                    UART_TXFIFO_THRESHOLD_1_8,
                    UART_RXFIFO_THRESHOLD_1_8};
     handle.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-
-    tx_pin.init();
-    rx_pin.init();
-
     // initialize the clock and interrupt
     clk_en_funcs[port]();
     HAL_NVIC_SetPriority(irqns[port], 14, 15);
@@ -64,9 +60,6 @@ void UART::deinit() {
     HAL_UART_DeInit(&handle);
     clk_dis_funcs[port]();
     HAL_NVIC_DisableIRQ(irqns[port]);
-
-    rx_pin.deinit();
-    tx_pin.deinit();
 }
 
 /**
