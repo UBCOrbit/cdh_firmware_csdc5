@@ -13,7 +13,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-set(FLAGS_COMMON "-mthumb -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard -fdata-sections -ffunction-sections -Wall -g3" CACHE INTERNAL "C / C++ common Flags")
+set(FLAGS_COMMON "-fstack-usage -mthumb -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard -fdata-sections -ffunction-sections -Wall -g3" CACHE INTERNAL "C / C++ common Flags")
 set(FLAGS_CXX "-std=c++17 -Wno-register -fno-unwind-tables -fno-exceptions -fno-rtti" CACHE INTERNAL "C++ only Flags")
 set(FLAGS_C "" CACHE INTERNAL "C only Flags")
 set(FLAGS_LINKER "-Wl,--gc-sections --specs=nano.specs -Tmem.ld -lc -lm -lnosys -Wl,-Map=bin/${CMAKE_PROJECT_NAME}.map" CACHE INTERNAL "Linker flags")
