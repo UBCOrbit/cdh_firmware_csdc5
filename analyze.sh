@@ -11,5 +11,3 @@ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1\
 
 # run the linter
 clang-tidy src/**/*.cpp
-
-python3 scripts/task_stack.py

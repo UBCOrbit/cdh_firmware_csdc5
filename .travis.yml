@@ -8,6 +8,7 @@ addons:
       - cppcheck
       - clang
       - clang-tidy
+      - python3
 script:
   - sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa -y
   - sudo apt-get update -q
@@ -15,6 +16,7 @@ script:
   - arm-none-eabi-gcc --version
   - cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_TOOLCHAIN_FILE=./cmake/gcc.cmake -G "Ninja"
   - ninja
+  - python3 scripts/task_stack.py
   - cppcheck src/
   - for f in src/**/*.cpp; do clang-format $f | diff -u $f -; done
   - ./analyze.sh
