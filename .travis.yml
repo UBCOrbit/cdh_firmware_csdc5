@@ -11,8 +11,12 @@ addons:
       - python3
 script:
   - sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa -y
+  - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+  - sudo apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-8 main"
   - sudo apt-get update -q
-  - sudo apt-get install gcc-arm-embedded -y
+  - sudo apt-get install --yes --no-install-recommends clang-format-8 clang-tidy-8 gcc-arm-embedded
+  - sudo ln -s clang-format-8 /usr/bin/clang-format
+  - sudo ln -s clang-tidy-8 /usr/bin/clang-tidy
   - arm-none-eabi-gcc --version
   - cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_TOOLCHAIN_FILE=./cmake/gcc.cmake -G "Ninja"
   - ninja
