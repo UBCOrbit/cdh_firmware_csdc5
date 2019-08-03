@@ -13,8 +13,8 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-include_directories("/usr/arm-none-eabi/include/c++/7.3.1")
-include_directories("/usr/arm-none-eabi/include/c++/7.3.1/arm-none-eabi")
+file(GLOB GCC_INCLUDES /usr/arm-none-eabi/include/c++/*/ /usr/arm-none-eabi/include/c++/*/arm-none-eabi)
+include_directories(${GCC_INCLUDES})
 
 set(FLAGS_COMMON "-target armv7em-none-eabihf -I/usr/arm-none-eabi/include" CACHE INTERNAL "C / C++ common Flags")
 set(FLAGS_CXX "-std=c++17 -Wno-register -fno-unwind-tables -fno-exceptions -fno-rtti" CACHE INTERNAL "C++ only Flags")
