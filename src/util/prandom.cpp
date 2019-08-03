@@ -7,11 +7,9 @@ PRandom::PRandom(Random &random) {
         uint32_t seed = random();
 
         if (hydro_init_buffer_counter < HYDRO_INIT_BUFFER_SIZE) {
-            for (
-              size_t i = 0;
-              i < sizeof(seed) && hydro_init_buffer_counter < HYDRO_INIT_BUFFER_SIZE;
-              i++, hydro_init_buffer_counter++
-            ) {
+            for (size_t i = 0; i < sizeof(seed) && hydro_init_buffer_counter <
+                                                       HYDRO_INIT_BUFFER_SIZE;
+                 i++, hydro_init_buffer_counter++) {
                 hydro_init_buffer[hydro_init_buffer_counter] = seed & 0xFF;
                 seed >>= sizeof(uint8_t);
             }
@@ -22,14 +20,8 @@ PRandom::PRandom(Random &random) {
     }
 }
 
-PRandom::PRandom(PRandom &prandom) {
-    twister.seed(prandom.secure());
-}
+PRandom::PRandom(PRandom &prandom) { twister.seed(prandom.secure()); }
 
-uint32_t PRandom::fast() {
-    return twister();
-}
+uint32_t PRandom::fast() { return twister(); }
 
-uint32_t PRandom::secure() {
-    return hydro_random_u32();
-}
+uint32_t PRandom::secure() { return hydro_random_u32(); }

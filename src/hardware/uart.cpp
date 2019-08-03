@@ -13,13 +13,16 @@
  * @param tx The pin to transmit on.
  * @param rx The pin to receive on.
  */
-UART::UART(UART::Port port, uint32_t baud, HwOwner<GPIOPort>& gpio_port, uint8_t tx,
-           uint8_t rx)
-    : port(port), regs(uart_registers[port]), baud(baud), gpio_port_access(gpio_port.get_access()),
-      tx_pin(gpio_port_access->get_pin(tx)), rx_pin(gpio_port_access->get_pin(rx))
-{
-    tx_pin.configure(GPIOPin::Mode::AlternatePP, GPIOPin::Resistor::None, gpio_afs[port]);
-    rx_pin.configure(GPIOPin::Mode::AlternatePP, GPIOPin::Resistor::None, gpio_afs[port]);
+UART::UART(UART::Port port, uint32_t baud, HwOwner<GPIOPort> &gpio_port,
+           uint8_t tx, uint8_t rx)
+    : port(port), regs(uart_registers[port]), baud(baud),
+      gpio_port_access(gpio_port.get_access()),
+      tx_pin(gpio_port_access->get_pin(tx)),
+      rx_pin(gpio_port_access->get_pin(rx)) {
+    tx_pin.configure(GPIOPin::Mode::AlternatePP, GPIOPin::Resistor::None,
+                     gpio_afs[port]);
+    rx_pin.configure(GPIOPin::Mode::AlternatePP, GPIOPin::Resistor::None,
+                     gpio_afs[port]);
     uarts[port] = this;
 }
 

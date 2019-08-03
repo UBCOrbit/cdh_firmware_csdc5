@@ -1,8 +1,8 @@
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
-set(CMAKE_C_COMPILER /usr/lib/clang/ccc-analyzer)
-set(CMAKE_CXX_COMPILER /usr/lib/clang/c++-analyzer)
+set(CMAKE_C_COMPILER clang)
+set(CMAKE_CXX_COMPILER clang)
 set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
 set(CMAKE_SIZE llvm-size)
 
@@ -13,13 +13,8 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/../../../../arm-none-eabi/include/c++/8.3.0")
-include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/../../../../arm-none-eabi/include/c++/8.3.0/arm-none-eabi")
-include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/../../../../arm-none-eabi/include/c++/8.3.0/backward")
-include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/include")
-
-include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/include-fixed")
-include_directories("/usr/lib/gcc/arm-none-eabi/8.3.0/../../../../arm-none-eabi/include")
+include_directories("/usr/arm-none-eabi/include/c++/7.3.1")
+include_directories("/usr/arm-none-eabi/include/c++/7.3.1/arm-none-eabi")
 
 set(FLAGS_COMMON "-target armv7em-none-eabihf -I/usr/arm-none-eabi/include" CACHE INTERNAL "C / C++ common Flags")
 set(FLAGS_CXX "-std=c++17 -Wno-register -fno-unwind-tables -fno-exceptions -fno-rtti" CACHE INTERNAL "C++ only Flags")

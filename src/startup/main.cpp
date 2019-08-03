@@ -1,7 +1,7 @@
 #include "hardware/clock.h"
+#include "hardware/gpio.h"
 #include "hardware/init.h"
 #include "hardware/uart.h"
-#include "hardware/gpio.h"
 #include "os/os.h"
 
 UART uart{UART::U3, 9600, GPIO_D, 8, 9};
@@ -46,7 +46,7 @@ int main() {
  */
 void init_func() {
     uart.init();
-    
+
     pin.configure(GPIOPin::Mode::OutputPP, GPIOPin::Resistor::None, 0);
     for (int i = 0; i < 3; i++) {
         vTaskDelay(1000);

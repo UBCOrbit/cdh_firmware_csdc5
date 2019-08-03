@@ -10,7 +10,6 @@
  */
 class Random : public Hardware {
 public:
-
     Random() { handle.Instance = RNG; }
 
     void init() override;
@@ -20,7 +19,6 @@ public:
 
 protected:
     RNG_HandleTypeDef handle; //< Handle to the hardware for secure rng.
-
 };
 
 extern HwOwner<Random> random_instance;
