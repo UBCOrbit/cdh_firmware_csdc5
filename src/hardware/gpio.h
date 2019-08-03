@@ -5,6 +5,8 @@
 #include "hardware/hardware.h"
 #include "hardware/hw_access.h"
 
+#include <array>
+
 class GPIOPort;
 
 /**
@@ -103,7 +105,7 @@ private:
     friend class GPIOPin;
 
     Port port;
-    GPIOPin::GPIOPinState pin_states[16];
+    std::array<GPIOPin::GPIOPinState, 16> pin_states;
     GPIO_TypeDef *regs;
 };
 

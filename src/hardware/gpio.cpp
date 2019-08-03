@@ -6,22 +6,22 @@
  * @param port The register block pointing to the GPIO port.
  */
 GPIOPort::GPIOPort(Port port)
-    : port(port), pin_states({{*this, 0},
-                              {*this, 1},
-                              {*this, 2},
-                              {*this, 3},
-                              {*this, 4},
-                              {*this, 5},
-                              {*this, 6},
-                              {*this, 7},
-                              {*this, 8},
-                              {*this, 9},
-                              {*this, 10},
-                              {*this, 11},
-                              {*this, 12},
-                              {*this, 13},
-                              {*this, 14},
-                              {*this, 15}}),
+    : port(port), pin_states({{{*this, 0},
+                               {*this, 1},
+                               {*this, 2},
+                               {*this, 3},
+                               {*this, 4},
+                               {*this, 5},
+                               {*this, 6},
+                               {*this, 7},
+                               {*this, 8},
+                               {*this, 9},
+                               {*this, 10},
+                               {*this, 11},
+                               {*this, 12},
+                               {*this, 13},
+                               {*this, 14},
+                               {*this, 15}}}),
       regs((GPIO_TypeDef *)((port * 0x400) + (uint32_t)GPIOA)) {}
 
 /**
