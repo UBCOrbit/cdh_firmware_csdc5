@@ -1,7 +1,7 @@
 #include "hardware/clock.h"
+#include "hardware/gpio.h"
 #include "hardware/init.h"
 #include "hardware/uart.h"
-#include "hardware/gpio.h"
 #include "os/os.h"
 
 UART uart{UART::U3, 9600, GPIO_D, 8, 9};

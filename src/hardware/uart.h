@@ -61,7 +61,8 @@ public:
         ERROR_UNKNOWN,
     };
 
-    UART(Port port, uint32_t baud, HwOwner<GPIOPort>& gpio_port, uint8_t tx, uint8_t rx);
+    UART(Port port, uint32_t baud, HwOwner<GPIOPort> &gpio_port, uint8_t tx,
+         uint8_t rx);
 
     void init() override;
     void deinit() override;

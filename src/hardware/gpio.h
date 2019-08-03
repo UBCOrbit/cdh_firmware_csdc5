@@ -21,10 +21,9 @@ class GPIOPort;
  */
 class GPIOPin {
 public:
-
     /**
      * @brief Type-safe mode selection.
-     * 
+     *
      * Technically, this combines both the "mode" field of the GPIO peripheral
      * with the "push-pull" field.
      */
@@ -52,29 +51,28 @@ public:
     void write(bool on);
     bool read();
 
-    GPIOPin(const GPIOPin& pin) = default;
-    GPIOPin& operator=(const GPIOPin& pin) = default;
+    GPIOPin(const GPIOPin &pin) = default;
+    GPIOPin &operator=(const GPIOPin &pin) = default;
 
 private:
-
     friend class GPIOPort;
 
     struct GPIOPinState {
 
-        GPIOPinState(GPIOPort& port, uint32_t pin): port(port), pin(1 << pin) {}
+        GPIOPinState(GPIOPort &port, uint32_t pin)
+            : port(port), pin(1 << pin) {}
 
-        const GPIOPort& port;
+        const GPIOPort &port;
         const uint32_t pin;
-        
+
         Mode mode;
         Resistor res;
         uint32_t alt;
     };
 
-    GPIOPin(GPIOPinState& state): state(state) {}
+    GPIOPin(GPIOPinState &state) : state(state) {}
 
-    GPIOPinState& state;
-
+    GPIOPinState &state;
 };
 
 /**
@@ -91,11 +89,10 @@ private:
  */
 class GPIOPort : public Hardware {
 public:
-
     enum Port { A = 0, B, C, D, E, F, G, H, I, J, K };
 
     GPIOPort(Port port);
-    GPIOPort(const GPIOPort& port) = delete;
+    GPIOPort(const GPIOPort &port) = delete;
 
     GPIOPin get_pin(uint32_t pin);
 
@@ -103,13 +100,12 @@ public:
     void deinit() override;
 
 private:
-
     friend class GPIOPin;
 
     Port port;
     GPIOPin::GPIOPinState pin_states[16];
     GPIO_TypeDef *regs;
-
 };
 
-extern HwOwner<GPIOPort> GPIO_A, GPIO_B, GPIO_C, GPIO_D, GPIO_E, GPIO_F, GPIO_G, GPIO_H, GPIO_I, GPIO_J, GPIO_K;
+extern HwOwner<GPIOPort> GPIO_A, GPIO_B, GPIO_C, GPIO_D, GPIO_E, GPIO_F, GPIO_G,
+    GPIO_H, GPIO_I, GPIO_J, GPIO_K;

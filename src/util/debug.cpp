@@ -15,7 +15,7 @@ void debug_msg(const char *msg) {
             "mov r0, #0x4;"
             "bkpt #0xab;"
             :
-            : [msg] "r"(msg));
+            : [ msg ] "r"(msg));
 #endif
 }
 

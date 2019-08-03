@@ -1,3 +1,3 @@
 #pragma once
 
-char* i2a(int i);
+char *i2a(int i);
