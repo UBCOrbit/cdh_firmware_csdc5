@@ -10,4 +10,4 @@ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1\
       -DCMAKE_TOOLCHAIN_FILE=./cmake/static.cmake -G Ninja .
 
 # run the linter
-clang-tidy src/**/*.cpp
+clang-tidy -system-headers -header-filter='.*' src/**/*.cpp src/**/*.h
