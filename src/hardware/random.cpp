@@ -18,5 +18,3 @@ uint32_t Random::operator()() {
     HAL_RNG_GenerateRandomNumber(&handle, &number);
     return number;
 }
-
-HwOwner<Random> random_instance;

@@ -61,8 +61,7 @@ public:
         ERROR_UNKNOWN,
     };
 
-    UART(Port port, uint32_t baud, HwOwner<GPIOPort> &gpio_port, uint8_t tx,
-         uint8_t rx);
+    UART(Port port, uint32_t baud, GPIO::Port gpio, uint8_t tx, uint8_t rx);
 
     void init() override;
     void deinit() override;
@@ -78,9 +77,8 @@ protected:
     uint32_t baud;             //< Intended baudrate.
     UART_HandleTypeDef handle; //< HAL Handle for the UART.
 
-    HwAccess<GPIOPort> gpio_port_access;
-    GPIOPin tx_pin; //< GPIO tx pin that we own.
-    GPIOPin rx_pin; //< GPIO rx pin that we own.
+    GPIO tx_pin; //< GPIO tx pin that we own.
+    GPIO rx_pin; //< GPIO rx pin that we own.
 
     bool tx, rx; //< Are we currently transmitting or receiving?
 

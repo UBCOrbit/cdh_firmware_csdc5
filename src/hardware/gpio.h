@@ -3,26 +3,26 @@
 #include <stm32h7xx_hal.h>
 
 #include "hardware/hardware.h"
-#include "hardware/hw_access.h"
-
-#include <array>
-
-class GPIOPort;
 
 /**
- * @brief OO wrapper for GPIO pins.
+ * @brief OO wrapper for GPIOs.
  *
  * Usage example:
  *
  * ```
- * HwAccess<GPIOPOrt> port_access = GPIO_B.get_access();
- * GPIOPin pin = port_access->get_pin(8);
- * pin.configure(GPIOPin::Mode::OutputPP, GPIOPin::Resistor::None, 0);
- * pin.write(true);
+ * GPIO pin {GPIOB, 14, GPIO::OutputPP, GPIO::None, 0};
+ * pin.init();
+ * pin.write(true); // turn the LED on
+ * pin.deinit(); // save some power by switching the output off
  * ```
  */
-class GPIOPin {
+class GPIO : public Hardware {
 public:
+    /**
+     * @brief All 11 GPIO ports
+     */
+    enum Port { A, B, C, D, E, F, G, H, I, J, K };
+
     /**
      * @brief Type-safe mode selection.
      *
@@ -47,67 +47,23 @@ public:
         Pulldown = GPIO_PULLDOWN,
     };
 
-    void configure(Mode mode, Resistor res, uint32_t alt);
-    void reset();
+    GPIO(Port port, uint32_t pin, Mode mode, Resistor res, uint32_t alt);
 
     void write(bool on);
     bool read();
 
-    GPIOPin(const GPIOPin &pin) = default;
-    GPIOPin &operator=(const GPIOPin &pin) = default;
-
-private:
-    friend class GPIOPort;
-
-    struct GPIOPinState {
-
-        GPIOPinState(GPIOPort &port, uint32_t pin)
-            : port(port), pin(1 << pin) {}
-
-        const GPIOPort &port;
-        const uint32_t pin;
-
-        Mode mode;
-        Resistor res;
-        uint32_t alt;
-    };
-
-    GPIOPin(GPIOPinState &state) : state(state) {}
-
-    GPIOPinState &state;
-};
-
-/**
- * @brief OO wrapper for GPIO ports.
- *
- * Usage example:
- *
- * ```
- * HwAccess<GPIOPOrt> port_access = GPIO_B.get_access();
- * GPIOPin pin = port_access->get_pin(8);
- * pin.configure(GPIOPin::Mode::OutputPP, GPIOPin::Resistor::None, 0);
- * pin.write(true);
- * ```
- */
-class GPIOPort : public Hardware {
-public:
-    enum Port { A = 0, B, C, D, E, F, G, H, I, J, K };
-
-    GPIOPort(Port port);
-    GPIOPort(const GPIOPort &port) = delete;
-
-    GPIOPin get_pin(uint32_t pin);
-
     void init() override;
     void deinit() override;
 
-private:
-    friend class GPIOPin;
+protected:
+    GPIO_TypeDef *get_regs();
 
     Port port;
-    std::array<GPIOPin::GPIOPinState, 16> pin_states;
-    GPIO_TypeDef *regs;
-};
+    GPIO_TypeDef *regs; //< Pointer to the GPIO register block.
+    uint32_t pin;       //< The pin inside the port.
+    Mode mode;          //< Configured mode and push-pull configuration.
+    Resistor res; //< Resistor pull-up, pull-down, or floating configuration.
+    uint32_t alt; //< Which alternate function is selected.
 
-extern HwOwner<GPIOPort> GPIO_A, GPIO_B, GPIO_C, GPIO_D, GPIO_E, GPIO_F, GPIO_G,
-    GPIO_H, GPIO_I, GPIO_J, GPIO_K;
+    static uint8_t pins[11]; //< Number of in-use pins per port.
+};
