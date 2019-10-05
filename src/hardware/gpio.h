@@ -54,6 +54,7 @@ public:
     bool read();
 
     GPIOPin(const GPIOPin &pin) = default;
+    GPIOPin &operator=(const GPIOPin &pin) = default;
 
 private:
     friend class GPIOPort;
