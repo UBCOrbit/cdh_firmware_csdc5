@@ -66,10 +66,10 @@ public:
     void init() override;
     void deinit() override;
 
-    Async<Status> transmit(const uint8_t *, size_t len);
-    Async<Status> transmit(const char *);
+    CHECK Async<Status> transmit(const uint8_t *, size_t len);
+    CHECK Async<Status> transmit(const char *);
 
-    Async<Status> receive(uint8_t *data, size_t len);
+    CHECK Async<Status> receive(uint8_t *data, size_t len);
 
 protected:
     Port port;                 //< The UART we own.

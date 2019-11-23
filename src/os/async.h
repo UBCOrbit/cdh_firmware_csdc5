@@ -6,6 +6,7 @@
 #include <queue.h>
 
 #define FWD(...) ::std::forward<decltype(__VA_ARGS__)>(__VA_ARGS__)
+#define CHECK __attribute__((warn_unused_result))
 
 /**
  * @brief Helper class that is an @ref Async that has been mapped or
